@@ -1,6 +1,7 @@
 use clap::Parser;
+use projector_rs::opts::Opts;
 
 fn main() {
-    let opts = projector_rs::opts::Opts::parse();
+    let opts = Opts::parse();
     println!("opts: {:?}", opts);
 }
