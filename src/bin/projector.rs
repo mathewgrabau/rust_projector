@@ -1,7 +1,11 @@
 use clap::Parser;
-use projector_rs::opts::Opts;
+use projector_rs::{opts::Opts, config::Config};
 
-fn main() {
-    let opts = Opts::parse();
+use anyhow::Result;
+
+fn main() -> Result<()> {
+    let opts: Config = Opts::parse().try_into()?;
     println!("opts: {:?}", opts);
+
+    return Ok(());
 }
