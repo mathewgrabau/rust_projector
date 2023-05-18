@@ -31,7 +31,7 @@ impl TryFrom<Opts> for Config {
 }
 
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Operation {
     Print(Option<String>),
     Add(String, String),
@@ -113,4 +113,61 @@ fn get_pwd(pwd: Option<PathBuf>) -> Result<PathBuf> {
 
     let pwd = std::env::current_dir().context("error getting the current_dir")?;
     return Ok(pwd);
+}
+
+#[cfg(test)]
+mod test {
+    use anyhow::Ok;
+
+    use crate::opts::Opts;
+    use crate::config::Config;
+    use crate::config::Operation;
+
+    #[test]
+    fn test_print_all() -> anyhow::Result<()> {
+        let opts: Config = Opts {
+            args: vec![],
+            config: None,
+            pwd: None,
+        }.try_into()?;
+
+        assert_eq!(opts.operation, Operation::Print(None));
+        return Ok(());
+    }
+
+    #[test]
+    fn test_print_key() -> anyhow::Result<()> {
+        let opts: Config = Opts {
+            args: vec!["foo".to_string()],
+            config: None,
+            pwd: None,
+        }.try_into()?;
+
+        assert_eq!(opts.operation, Operation::Print(Some("foo".to_string())));
+        return Ok(());
+    }
+
+    #[test]
+    fn test_add() -> anyhow::Result<()> {
+        let opts: Config = Opts {
+            args: vec![String::from("add"), String::from("key"), String::from("value")],
+            config: None,
+            pwd: None,
+        }.try_into()?;
+
+        assert_eq!(opts.operation, Operation::Add(String::from("key"), String::from("value")));
+        return Ok(());
+    }
+
+    #[test]
+    fn test_remove() -> anyhow::Result<()> {
+        let opts: Config = Opts {
+            args: vec![String::from("rm"), String::from("key")],
+            config: None,
+            pwd: None
+        }.try_into()?;
+
+        assert_eq!(opts.operation, Operation::Remove(String::from("key")));
+        return Ok(());
+    }
 }
