@@ -118,13 +118,14 @@ fn get_pwd(pwd: Option<PathBuf>) -> Result<PathBuf> {
 #[cfg(test)]
 mod test {
     use anyhow::Ok;
+    use anyhow::Result;
 
     use crate::opts::Opts;
     use crate::config::Config;
     use crate::config::Operation;
 
     #[test]
-    fn test_print_all() -> anyhow::Result<()> {
+    fn test_print_all() -> Result<()> {
         let opts: Config = Opts {
             args: vec![],
             config: None,
@@ -136,7 +137,7 @@ mod test {
     }
 
     #[test]
-    fn test_print_key() -> anyhow::Result<()> {
+    fn test_print_key() -> Result<()> {
         let opts: Config = Opts {
             args: vec!["foo".to_string()],
             config: None,
@@ -148,7 +149,7 @@ mod test {
     }
 
     #[test]
-    fn test_add() -> anyhow::Result<()> {
+    fn test_add() -> Result<()> {
         let opts: Config = Opts {
             args: vec![String::from("add"), String::from("key"), String::from("value")],
             config: None,
@@ -160,7 +161,7 @@ mod test {
     }
 
     #[test]
-    fn test_remove() -> anyhow::Result<()> {
+    fn test_remove() -> Result<()> {
         let opts: Config = Opts {
             args: vec![String::from("rm"), String::from("key")],
             config: None,
